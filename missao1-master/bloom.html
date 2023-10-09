@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Bloom</title>
+</head>
+
+<body>
+  <a href="Educador.html"><button>Início</button></a>
+
+  <h1>Casdastro de bloom 🌹</h1>
+
+    <form id="cadastroForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Bloom</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="bloomTableBody"></tbody>
+    </table>
+
+    <script>
+
+      let blooms = [];
+
+      document.getElementById('cadastroForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const nome = document.getElementById('nome').value;
+        const id = blooms.length + 1;
+        blooms.push({ id, nome });
+        exibirBloom();
+        document.getElementById('nome').value = '';
+      });
+
+      function exibirBloom() {
+        const tableBody = document.getElementById('bloomTableBody');
+        tableBody.innerHTML = '';
+
+        blooms.forEach(bloom => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+                    <td>${bloom.id}</td>
+                    <td>${bloom.nome}</td>
+                    <td>
+                        <button onclick="editarBloom(${bloom.id})">Editar</button>
+                        <button onclick="excluirBloom(${bloom.id})">Excluir</button>
+                    </td>
+                `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      function editarBloom(id) {
+        const nome = prompt('Editar Nome:', blooms.find(bloom => bloom.id === id).nome);
+        if (nome !== null) {
+          const index = blooms.findIndex(bloom => bloom.id === id);
+          blooms[index].nome = nome;
+          exibirBloom();
+        }
+      }
+
+      function excluirBloom(id) {
+        const confirmacao = confirm('Tem certeza que deseja excluir este Bloom?');
+        if (confirmacao) {
+          blooms = blooms.filter(bloom => bloom.id !== id);
+          exibirBloom();
+        }
+      }
+
+      exibirBloom();
+    </script>
+
+    </script>
+  </form>
+
+  <br />
+
+  <p></p>
+</body>
+
+</html>
